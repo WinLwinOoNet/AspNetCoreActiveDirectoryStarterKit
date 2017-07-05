@@ -9,37 +9,37 @@ Starter kit to quickly create ASP.NET Core with On-Premises Active Directory Aut
 Database script is located at [Tables.sql](https://github.com/WinLwinOoNet/AspNetCoreActiveDirectoryStarterKit/blob/master/doc/Tables.sql).
 
 ## Database Diagram
-![Database Diagram](https://raw.githubusercontent.com/WinLwinOoNet/AspNetCoreActiveDirectoryStarterKit/master/doc/screenshots/DatabaseDiagram.png "Database Diagram")
+![Database Diagram](https://github.com/WinLwinOoNet/AspNetCoreActiveDirectoryStarterKit/blob/master/doc/screenshots/DatabaseDiagram.png "Database Diagram")
 
 ## User Login
-![User Login](https://raw.githubusercontent.com/WinLwinOoNet/AspNetCoreActiveDirectoryStarterKit/master/doc/screenshots/Login.png "User Login")
+![User Login](https://github.com/WinLwinOoNet/AspNetCoreActiveDirectoryStarterKit/blob/master/doc/screenshots/Login.png "User Login")
 
 ## User Dashboard
-![User Dashboard](https://raw.githubusercontent.com/WinLwinOoNet/AspNetCoreActiveDirectoryStarterKit/master/doc/screenshots/UserDashboard.png "User Dashboard")
+![User Dashboard](https://github.com/WinLwinOoNet/AspNetCoreActiveDirectoryStarterKit/blob/master/doc/screenshots/UserDashboard.png "User Dashboard")
 
 ## Admin Dashboard
-![Admin Dashboard](https://raw.githubusercontent.com/WinLwinOoNet/AspNetCoreActiveDirectoryStarterKit/master/doc/screenshots/AdminDashboard.png "Admin Dashboard")
+![Admin Dashboard](https://github.com/WinLwinOoNet/AspNetCoreActiveDirectoryStarterKit/blob/master/doc/screenshots/AdminDashboard.png "Admin Dashboard")
 
 ## Admin Application Logs
-![Admin Application Logs](https://raw.githubusercontent.com/WinLwinOoNet/AspNetCoreActiveDirectoryStarterKit/master/doc/screenshots/AdminApplicationLogs.png "Admin Application Logs")
+![Admin Application Logs](https://github.com/WinLwinOoNet/AspNetCoreActiveDirectoryStarterKit/blob/master/doc/screenshots/AdminApplicationLogs.png "Admin Application Logs")
 
 ## Admin Application Log Detail
-![Admin Application Log Detail](https://raw.githubusercontent.com/WinLwinOoNet/AspNetCoreActiveDirectoryStarterKit/master/doc/screenshots/AdminApplicationLogDetail.png "Admin Application Log Detail")
+![Admin Application Log Detail](https://github.com/WinLwinOoNet/AspNetCoreActiveDirectoryStarterKit/blob/master/doc/screenshots/AdminApplicationLogDetail.png "Admin Application Log Detail")
 
 ## Admin Email Templates
-![Admin Email Templates](https://raw.githubusercontent.com/WinLwinOoNet/AspNetCoreActiveDirectoryStarterKit/master/doc/screenshots/AdminEmailTemplateList.png "Admin Email Templates")
+![Admin Email Templates](https://github.com/WinLwinOoNet/AspNetCoreActiveDirectoryStarterKit/blob/master/doc/screenshots/AdminEmailTemplateList.png "Admin Email Templates")
 
 ## Admin Email Template Edit
 ![Admin Dashboard](https://github.com/WinLwinOoNet/AspNetCoreActiveDirectoryStarterKit/blob/master/doc/screenshots/AdminEmailTemplateEdit.png "Admin Email Template Edit")
 
 ## Admin User List
-![Admin User List](https://raw.githubusercontent.com/WinLwinOoNet/AspNetCoreActiveDirectoryStarterKit/master/doc/screenshots/AdminUserList.png "Admin User List")
+![Admin User List](https://github.com/WinLwinOoNet/AspNetCoreActiveDirectoryStarterKit/blob/master/doc/screenshots/AdminUserList.png "Admin User List")
 
 ## Admin User Create
 ![Admin User Create](https://github.com/WinLwinOoNet/AspNetCoreActiveDirectoryStarterKit/blob/master/doc/screenshots/AdminUserCreate.png "Admin User Create")
 
 ## Admin Settings
-![Admin Settings](https://raw.githubusercontent.com/WinLwinOoNet/AspNetCoreActiveDirectoryStarterKit/master/doc/screenshots/AdminSettings.png "Admin Settings")
+![Admin Settings](https://github.com/WinLwinOoNet/AspNetCoreActiveDirectoryStarterKit/blob/master/doc/screenshots/AdminSettings.png "Admin Settings")
 
 ## Admin Setting Edit
 ![Admin Setting Edit](https://github.com/WinLwinOoNet/AspNetCoreActiveDirectoryStarterKit/blob/master/doc/screenshots/AdminSettingEdit.png "Admin Setting Edit")
