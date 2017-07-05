@@ -1,0 +1,81 @@
+﻿@using Asp.Core
+@{
+    ViewData["Title"] = Constants.MainPages.Dashboard;
+}
+
+
+<div class="content-header clearfix">
+    <h1 class="pull-left">
+        @ViewData["Title"]
+    </h1>
+</div>
+
+<div class="content">
+    <div class="row">
+        <div class="col-lg-5 col-md-6 col-sm-12 col-xs-12">
+            <div class="small-box bg-aqua">
+                <div class="inner">
+                    <h3>@Constants.MainPages.Users</h3>
+                    <p>Users.</p>
+                </div>
+                <div class="icon"><i class="fa fa-user"></i></div>
+                <a href="@Url.Action("Index", "Users")" class="small-box-footer show-progress">
+                    More info <i class="fa fa-arrow-circle-right"></i>
+                </a>
+            </div>
+        </div>
+        <div class="col-lg-5 col-md-6 col-sm-12 col-xs-12">
+            <div class="small-box bg-yellow">
+                <div class="inner">
+                    <h3>@Constants.MainPages.Settings</h3>
+                    <p>Settings.</p>
+                </div>
+                <div class="icon"><i class="fa fa-cog"></i></div>
+                <a href="@Url.Action("Index", "Settings")" class="small-box-footer show-progress">
+                    More info <i class="fa fa-arrow-circle-right"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-5 col-md-6 col-sm-12 col-xs-12">
+            <div class="small-box bg-green">
+                <div class="inner">
+                    <h3>@Constants.MainPages.EmailTemplates</h3>
+                    <p>Email templates.</p>
+                </div>
+                <div class="icon"><i class="fa fa-envelope-o"></i></div>
+                <a href="@Url.Action("Index", "EmailTemplates")" class="small-box-footer show-progress">
+                    More info <i class="fa fa-arrow-circle-right"></i>
+                </a>
+            </div>
+        </div>
+        <div class="col-lg-5 col-md-6 col-sm-12 col-xs-12">
+            <div class="small-box bg-maroon">
+                <div class="inner">
+                    <h3>@Constants.MainPages.Logs</h3>
+                    <p>Application logs.</p>
+                </div>
+                <div class="icon"><i class="fa fa-exclamation-triangle"></i></div>
+                <a href="@Url.Action("Index", "Logs")" class="small-box-footer show-progress">
+                    More info <i class="fa fa-arrow-circle-right"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-5 col-md-6 col-sm-12 col-xs-12">
+            <div class="small-box bg-purple">
+                <div class="inner">
+                    <h3>@Constants.MainPages.ReleaseHistory</h3>
+                    <p>Release history.</p>
+                </div>
+                <div class="icon"><i class="fa fa-flag"></i></div>
+                <a href="@Url.Action("Index", "Logs")" class="small-box-footer show-progress">
+                    More info <i class="fa fa-arrow-circle-right"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+

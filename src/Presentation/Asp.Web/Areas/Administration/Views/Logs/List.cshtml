@@ -1,0 +1,159 @@
+﻿@using Asp.Core
+@using Asp.Web.Common.Models.LogViewModels
+@model LogSearchViewModel
+
+@{
+    ViewData["Title"] = Constants.MainPages.Logs;
+}
+
+<form asp-controller="Logs" asp-action="List" method="post">
+    <div class="content-header clearfix">
+        <h1><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> @ViewData["Title"]</h1>
+    </div>
+    <div class="content">
+        <div class="panel panel-default">
+            <div class="panel-body form-horizontal">
+                <div class="row">
+                    <div class="col-lg-5 col-md-6 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.FromDate, new { @class = "control-label col-md-4 col-sm-5 col-xs-12" })
+                            <div class="col-md-8 col-sm-7 col-xs-12">
+                                @(Html.Kendo().DateTimePickerFor(model => model.FromDate)
+                                      .Value(Model.FromDate).HtmlAttributes(new { placeholder = "From Date", style = "width: 100%" }))
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.ToDate, new { @class = "control-label col-md-4 col-sm-5 col-xs-12" })
+                            <div class="col-md-8 col-sm-7 col-xs-12">
+                                @(Html.Kendo().DateTimePickerFor(model => model.ToDate)
+                                      .Value(Model.ToDate).HtmlAttributes(new { placeholder = "To Date", style = "width: 100%" }))
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.SelectedLevel, new { @class = "control-label col-md-4 col-sm-5 col-xs-12" })
+                            <div class="col-md-8 col-sm-7 col-xs-12">
+                                @Html.DropDownListFor(model => model.SelectedLevel, Model.AvailableLevels, new { @class = "form-control" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-7 col-md-6 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Message, new { @class = "control-label col-md-4 col-sm-5 col-xs-12" })
+                            <div class="col-md-8 col-sm-7 col-xs-12">
+                                @Html.TextBoxFor(model => model.Message, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Logger, new { @class = "control-label col-md-4 col-sm-5 col-xs-12" })
+                            <div class="col-md-8 col-sm-7 col-xs-12">
+                                @Html.TextBoxFor(model => model.Logger, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Callsite, new { @class = "control-label col-md-4 col-sm-5 col-xs-12" })
+                            <div class="col-md-8 col-sm-7 col-xs-12">
+                                @Html.TextBoxFor(model => model.Callsite, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Exception, new { @class = "control-label col-md-4 col-sm-5 col-xs-12" })
+                            <div class="col-md-8 col-sm-7 col-xs-12">
+                                @Html.TextBoxFor(model => model.Exception, new { @class = "form-control" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 text-center">
+                        <button id="search-button" type="button" class="btn btn-primary btn-search"
+                                data-loading-text="Searching...">
+                            <i class="fa fa-search" aria-hidden="true"></i> Search
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        @(Html.Kendo().Grid<LogViewModel>()
+              .Sortable(true)
+              .Name("logGrid")
+              .HtmlAttributes(new { @class = "table-fixed" })
+              .Pageable(pageableBuilder => pageableBuilder.Refresh(true).PageSizes(new[] { 5, 10, 25, 50, 100, 500, 1000 }))
+              .Columns(columns =>
+              {
+                  columns.Bound(d => d.Id).ClientTemplate(@"<a class=""k-grid-edit"" href=""\#""><i class=""fa fa-external-link""></i></a>")
+                      .Width(50).HtmlAttributes(new { @class = "text-center" });
+                  columns.Bound(d => d.Logged).Format("{0:g}").Width(150);
+                  columns.Bound(d => d.Level).Width(150);
+                  columns.Bound(d => d.Action).Width(150);
+                  columns.Bound(d => d.Controller).Width(150);
+                  columns.Bound(d => d.Identity).Width(150);
+                  columns.Bound(d => d.Logger).Width(150);
+              })
+              .Events(events => events.Edit("edit"))
+              .Editable(editable => editable.Mode(GridEditMode.PopUp)
+                  .TemplateName("Log")
+                  .Window(w => w.Title("Log Details")))
+              .DataSource(dataSource => dataSource
+                  .Ajax()
+                  .ServerOperation(true)
+                  .PageSize(10)
+                  .Read(read => read.Action("List", "Logs").Data("additionalData"))
+                  .Model(model => model.Id(m => m.Id))
+                  .Update(update => update.Action("ActionDoesNotExist", "ControllerDoesNotExist"))
+                  .Events(events => events.RequestStart("requestStart").RequestEnd("requestEnd").Error("displayGridError"))))
+    </div>
+
+    <script type="text/javascript">
+
+        $(function() {
+
+            $("form").keydown(function(event) {
+                if (event.keyCode === 13) {
+                    $("#search-button").click();
+                    return false;
+                }
+            });
+
+            $("#search-button").click(function() {
+                var grid = $("#logGrid").data("kendoGrid");
+                grid.dataSource.page(1); // new search, so set page size to 1.
+            });
+        });
+
+        function edit(e) {
+            $(".k-grid-update").hide();
+            $(".k-grid-cancel").html("<i class=\"fa fa-times\"></i> Close");
+        }
+
+        function requestStart(e) {
+            $("#search-button").button("loading");
+        }
+
+        function requestEnd(e) {
+            $("#search-button").button("reset");
+        }
+
+        function dataBound() {
+            if (this.dataSource.totalPages() === 1) {
+                this.pager.element.hide();
+            } else {
+                this.pager.element.show();
+            }
+        }
+
+        function additionalData() {
+            return {
+                FromDate: $("#@Html.IdFor(model => model.FromDate)").val(),
+                ToDate: $("#@Html.IdFor(model => model.ToDate)").val(),
+                SelectedLevel: $("#@Html.IdFor(model => model.SelectedLevel)").val(),
+                Message: $("#@Html.IdFor(model => model.Message)").val(),
+                Logger: $("#@Html.IdFor(model => model.Logger)").val(),
+                Callsite: $("#@Html.IdFor(model => model.Callsite)").val(),
+                Exception: $("#@Html.IdFor(model => model.Exception)").val()
+            };
+        }
+
+    </script>
+</form>

@@ -1,0 +1,21 @@
+@using Asp.Web.Common
+
+@inject IUserSession UserSession
+
+@if (User.Identity.IsAuthenticated)
+{
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <i class="fa fa-user"></i> Hello, @UserSession.FirstName! <i class="fa fa-caret-down"></i>
+        </a>
+        <ul class="dropdown-menu">
+            <li>
+                <form asp-area="" asp-controller="Account" asp-action="Logout" method="post" id="logoutForm">
+                    <a href="javascript:document.getElementById('logoutForm').submit()">
+                        <i class="fa fa-sign-out"></i> Sign out
+                    </a>
+                </form>
+            </li>
+        </ul>
+    </li>
+}

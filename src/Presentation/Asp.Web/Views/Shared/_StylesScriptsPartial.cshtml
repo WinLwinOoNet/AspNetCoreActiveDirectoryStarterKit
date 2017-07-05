@@ -1,0 +1,79 @@
+﻿<environment names="Development">
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css"/>
+    <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="~/lib/AdminLTE/dist/css/AdminLTE.css" />
+    <link rel="stylesheet" href="~/lib/AdminLTE/dist/css/skins/skin-blue-light.css" />
+    <link rel="stylesheet" href="~/lib/kendo-ui/styles/kendo.bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/kendo-ui/styles/kendo.common-bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css"/>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="~/lib/underscore/underscore-min.js"></script>
+    <script src="~/lib/AdminLTE/dist/js/app.min.js"></script>
+    <script src="~/lib/AdminLTE/plugins/slimScroll/jquery.slimscroll.min.js"></script>
+    <script src="~/lib/kendo-ui/js/kendo.all.min.js"></script>
+    <script src="~/lib/kendo-ui/js/kendo.aspnetmvc.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+</environment>
+<environment names="Staging,Production">
+    <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
+          asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+          asp-fallback-test-class="sr-only" 
+          asp-fallback-test-property="position" 
+          asp-fallback-test-value="absolute" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+          asp-fallback-href="~/lib/font-awesome/css/font-awesome.min.css"
+          asp-fallback-test-class="sr-only" 
+          asp-fallback-test-property="position" 
+          asp-fallback-test-value="absolute" />
+    <link rel="stylesheet"
+          href="https://kendo.cdn.telerik.com/2017.2.621/styles/kendo.bootstrap.min.css"
+          asp-fallback-href="~/lib/kendo-ui/styles/kendo.bootstrap.min.css"
+          asp-fallback-test-class="k-common-test-class"
+          asp-fallback-test-property="opacity"
+          asp-fallback-test-value="0"/>
+    <link rel="stylesheet"
+          href="https://kendo.cdn.telerik.com/2017.2.621/styles//kendo.common-bootstrap.min.css"
+          asp-fallback-href="~/lib/kendo-ui/styles/kendo.common-bootstrap.min.css"
+          asp-fallback-test-class="k-theme-test-class"
+          asp-fallback-test-property="opacity" 
+          asp-fallback-test-value="0"/>
+    <link rel="stylesheet" href="~/css/all.min.css" asp-append-version="true"/>
+    
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
+            asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+            asp-fallback-test="window.jQuery"
+            crossorigin="anonymous"
+            integrity="sha384-K+ctZQ+LL8q6tP7I94W+qzQsfRV2a+AfHIi9k8z8l9ggpc8X+Ytst4yBo/hH+8Fk">
+    </script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.14.0/jquery.validate.min.js"
+            asp-fallback-src="~/lib/jquery-validation/dist/jquery.validate.min.js"
+            asp-fallback-test="window.jQuery && window.jQuery.validator"
+            crossorigin="anonymous"
+            integrity="sha384-Fnqn3nxp3506LP/7Y3j/25BlWeA3PXTyT1l78LjECcPaKCV12TsZP7yyMxOe/G/k">
+    </script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.6/jquery.validate.unobtrusive.min.js"
+            asp-fallback-src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"
+            asp-fallback-test="window.jQuery && window.jQuery.validator && window.jQuery.validator.unobtrusive"
+            crossorigin="anonymous"
+            integrity="sha384-JrXK+k53HACyavUKOsL+NkmSesD2P+73eDMrbTtTk0h4RmOF8hF8apPlkp26JlyH">
+    </script>
+    <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js"
+            asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+            asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
+            crossorigin="anonymous"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
+    </script>
+    <script src="https://kendo.cdn.telerik.com/2017.2.621/js/kendo.all.min.js"
+            asp-fallback-src="~/lib/kendo-ui/js/kendo.all.min.js"
+            asp-fallback-test="window.kendo">
+    </script>
+    <script src="https://kendo.cdn.telerik.com/2017.2.621/js/kendo.aspnetmvc.min.js"
+            asp-fallback-src="~/lib/kendo-ui/js/kendo.aspnetmvc.min.js"
+            asp-fallback-test="kendo.data.transports['aspnetmvc-ajax']">
+    </script>
+    <script src="~/js/all.min.js" asp-append-version="true"></script>
+</environment>

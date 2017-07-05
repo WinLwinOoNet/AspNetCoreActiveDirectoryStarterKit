@@ -1,0 +1,74 @@
+﻿@model  Asp.Web.Common.Models.LogViewModels.LogViewModel
+
+@Html.HiddenFor(model => model.Id)
+<div class="popup-editor-md">
+    <div class="row form-horizontal">
+        <div class="col-xs-4">
+            <div class="form-group">
+                <label asp-for="Logged" class="col-xs-4 control-label"></label>
+                <div class="col-xs-8 form-control-static">
+                    <div data-format="g" data-bind="text: @Html.IdFor(model => model.Logged)"></div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Level" class="col-xs-4 control-label"></label>
+                <div class="col-xs-8 form-control-static">
+                    <div data-bind="text: @Html.IdFor(model => model.Level)"></div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Action" class="col-xs-4 control-label"></label>
+                <div class="col-xs-8 form-control-static">
+                    <div data-bind="text: @Html.IdFor(model => model.Action)"></div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Controller" class="col-xs-4 control-label"></label>
+                <div class="col-xs-8 form-control-static">
+                    <div data-bind="text: @Html.IdFor(model => model.Controller)"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-8">
+            <div class="form-group">
+                <label asp-for="Logger" class="col-xs-2 control-label"></label>
+                <div class="col-xs-10 form-control-static">
+                    <div data-bind="text: @Html.IdFor(model => model.Logger)"></div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Url" class="col-xs-2 control-label"></label>
+                <div class="col-xs-10 form-control-static">
+                    <div data-bind="text: @Html.IdFor(model => model.Url)"></div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Referrer" class="col-xs-2 control-label"></label>
+                <div class="col-xs-10 form-control-static">
+                    <div data-bind="text: @Html.IdFor(model => model.Referrer)"></div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="UserAgent" class="col-xs-2 control-label"></label>
+                <div class="col-xs-10 form-control-static">
+                    <div data-bind="text: @Html.IdFor(model => model.UserAgent)"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="form-group">
+        <label asp-for="Message"></label>
+        <div data-bind="text: @Html.IdFor(model => model.Message)"></div>
+    </div>
+    <hr />
+    <div class="form-group">
+        <label asp-for="Callsite"></label>
+        <div data-bind="text: @Html.IdFor(model => model.Callsite)"></div>
+    </div>
+    <hr />
+    <div class="form-group">
+        <label asp-for="Exception"></label>
+        <div data-bind="text: @Html.IdFor(model => model.Exception)"></div>
+    </div>
+</div>

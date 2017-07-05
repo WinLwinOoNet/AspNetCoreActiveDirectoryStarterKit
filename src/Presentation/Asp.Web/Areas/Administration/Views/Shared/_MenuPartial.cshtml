@@ -1,0 +1,14 @@
+@using Asp.Core
+@(Html.Kendo().PanelBar()
+    .Name("Menu")
+    .ExpandMode(PanelBarExpandMode.Single)
+    .Items(panelbar =>
+    {
+        panelbar.Add().Action("Index", "Dashboard", new { area = Constants.Areas.Administration }).SpriteCssClasses("fa fa-desktop").Text(Constants.MainPages.Dashboard);
+        panelbar.Add().Action("List", "Users", new { area = Constants.Areas.Administration }).SpriteCssClasses("fa fa-user").Text(Constants.MainPages.Users);
+        panelbar.Add().Action("List", "Settings", new { area = Constants.Areas.Administration }).SpriteCssClasses("fa fa-cog").Text(Constants.MainPages.Settings);
+        panelbar.Add().Action("List", "EmailTemplates", new { area = Constants.Areas.Administration }).SpriteCssClasses("fa fa-envelope-o").Text(Constants.MainPages.EmailTemplates);
+        panelbar.Add().Action("List", "Logs", new { area = Constants.Areas.Administration }).SpriteCssClasses("fa fa-exclamation-triangle").Text(Constants.MainPages.Logs);
+        panelbar.Add().Action("Index", "ReleaseHistory", new { area = Constants.Areas.Administration }).SpriteCssClasses("fa fa-flag").Text(Constants.MainPages.ReleaseHistory);
+    })
+    .Events(events => events.Select("menuSelect")))

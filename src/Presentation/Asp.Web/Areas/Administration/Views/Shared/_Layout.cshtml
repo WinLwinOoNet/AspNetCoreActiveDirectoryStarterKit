@@ -1,0 +1,57 @@
+﻿@using Asp.Core
+@using Asp.Web.Areas.Administration.Controllers
+@using Asp.Web.Common
+
+@inject IUserSession UserSession
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>@ViewData["Title"]</title>
+    @await Html.PartialAsync("_StylesScriptsPartial")
+</head>
+<body class="fixed skin-blue-light sidebar-mini">
+    <div class="alert-container"></div>
+    <div class="wrapper">
+        <header class="main-header">
+            <a href="@Url.Action(nameof(DashboardController.Index), "Dashboard", new {area = Constants.Areas.Administration})" class="logo">
+                <span class="logo-mini"><strong>ASP</strong></span>
+                <span class="logo-lg"><strong>ASP.NET</strong> Core</span>
+            </a>
+            <nav class="navbar navbar-static-top">
+                <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                    <span class="sr-only">Toggle navigation</span>
+                </a>
+                <div class="navbar-custom-menu">
+                    <ul class="nav navbar-nav">
+                    @if (User.Identity.IsAuthenticated && UserSession.IsInRole(Constants.RoleNames.Administrator))
+                    {
+                        <li class="bg-green">
+                            <a href="@Url.Action("Index", "Home", new {area = ""})">
+                                <i class="fa fa-arrow-circle-left"></i> Back to User Dashboard
+                            </a>
+                        </li>
+                    }
+                        @await Html.PartialAsync("_LoginPartial")
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        <aside class="main-sidebar">
+            <section class="sidebar">
+                @Html.Partial("_MenuPartial")
+            </section>
+        </aside>
+        <div class="content-wrapper">
+            @RenderBody()
+        </div>
+        <div class="control-sidebar-bg"></div>
+    </div>
+    @RenderSection("Scripts", required: false)
+    @await Html.PartialAsync("_Alerts")
+    @await Html.PartialAsync("_SessionExpireNotification")
+</body>
+</html>

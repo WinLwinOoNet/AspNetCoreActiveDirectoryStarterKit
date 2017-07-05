@@ -1,0 +1,22 @@
+﻿@using Asp.Core
+@model  Asp.Web.Common.Models.SettingViewModels.SettingViewModel
+@{
+    ViewData["Title"] = Constants.MainPages.SettingEdit;
+}
+
+<form asp-controller="Settings" asp-action="Edit" id="create-update-form" autocomplete="off" method="post" role="form">
+    <div class="content-header clearfix">
+        <h1 class="pull-left">
+            <i class="fa fa-user" aria-hidden="true"></i> @ViewData["Title"]
+            <small><i class="fa fa-arrow-circle-left"></i> @Html.ActionLink("Back to Setting list", "List")</small>
+        </h1>
+        <div class="pull-right">
+            <button id="submit-button" type="submit" class="btn btn-primary">
+                <i class="fa fa-floppy-o" aria-hidden="true"></i> Save
+            </button>
+        </div>
+    </div>
+    @Html.Partial("_CreateOrUpdate", Model)
+</form>
+
+@await Html.PartialAsync("_SavingScriptPartial", "create-update-form")
