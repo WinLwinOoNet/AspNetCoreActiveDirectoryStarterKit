@@ -1,0 +1,39 @@
+﻿@model  Asp.Web.Common.Models.EmailTemplateViewModels.EmailTemplateViewModel
+
+<div class="content">
+    <div class="box box-primary form-horizontal">
+        <div class="box-body">
+            <input type="hidden" asp-for="Id" />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label col-md-3 col-sm-4 col-xs-12"></label>
+                <div class="col-md-9 col-sm-8 col-xs-12">
+                    <input asp-for="Description" class="form-control" />
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Subject" class="control-label col-md-3 col-sm-4 col-xs-12"></label>
+                <div class="col-md-9 col-sm-8 col-xs-12">
+                    <input asp-for="Subject" class="form-control" />
+                    <span asp-validation-for="Subject" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Body" class="control-label col-md-3 col-sm-4 col-xs-12"></label>
+                <div class="col-md-9 col-sm-8 col-xs-12">
+                    @(Html.Kendo().EditorFor(model => model.Body).Encoded(false).HtmlAttributes(new {style = "height: 500px"}))
+                </div>
+            </div>
+            @if (Model.Id > 0)
+            {
+                <div class="form-group">
+                    <div class="col-md-offset-3 col-sm-offset-4 col-md-9 col-sm-8 col-xs-12">
+                        <span class="timestamp">Created on <strong>@Model.CreatedOn.ToString("d")</strong></span>
+                        <span class="timestamp">Last updated on <strong>@Model.ModifiedOn.ToString("d")</strong></span>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

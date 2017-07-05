@@ -1,0 +1,58 @@
+﻿@using Asp.Core
+@model  Asp.Web.Common.Models.AccountViewModels.LoginViewModel
+
+@{
+    Layout = null;
+    ViewData["Title"] = Constants.MainPages.Login;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>@ViewData["Title"]</title>
+    @await Html.PartialAsync("_StylesScriptsPartial")
+</head>
+<body class="container-fluid">
+    <div class="login-container">
+        <div class="login-panel">
+            <form asp-controller="Account" asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" role="form">
+                <h3>
+                    <i class="fa fa-sign-in" aria-hidden="true"></i> Sign In
+                </h3>
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Domain" class="control-label"></label>
+                    <select asp-for="Domain" asp-items="@Model.AvailableDomains" class="form-control"></select>
+                    <span asp-validation-for="Domain" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="UserName" class="control-label"></label>
+                    <input asp-for="UserName" class="form-control" />
+                    <span asp-validation-for="UserName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Password" class="control-label"></label>
+                    <input asp-for="Password" class="form-control" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <button id="submit-button" type="submit" class="btn btn-primary btn-block">Sign In</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script type="text/javascript">
+        $(function () {
+            $("#@Html.IdFor(model => model.UserName)").focus();
+
+            $("form").data("validator").settings.submitHandler = function (form) {
+                $("#submit-button").html("<i class=\"fa fa-spinner fa-pulse\"></i> Signing In...").prop('disabled', true);
+                form.submit();
+            };
+        });
+    </script>
+</body>
+</html>

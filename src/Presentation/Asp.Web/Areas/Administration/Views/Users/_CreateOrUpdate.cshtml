@@ -1,0 +1,69 @@
+﻿@model Asp.Web.Common.Models.UserViewModels.UserCreateUpdateViewModel
+
+<div class="content">
+    <div class="box box-primary form-horizontal">
+        <div class="box-body">
+            <input type="hidden" asp-for="Id"/>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                @if (Model.Id > 0)
+                {
+                    <input type="hidden" asp-for="UserName" class="form-control" />
+                    <label asp-for="UserName" class="control-label col-md-3 col-sm-4 col-xs-12"></label>
+                    <div class="col-md-4 col-sm-5 col-xs-12 form-control-static">@Model.UserName</div>
+                }
+                else
+                {
+                    <label asp-for="UserName" class="control-label col-md-3 col-sm-4 col-xs-12"></label>
+                    @(Html.Kendo().Tooltip().For("#username-help").Position(TooltipPosition.Bottom).Content("<p>Active Directory Account</p>").Width(175))
+                    <div class="col-md-4 col-sm-5 col-xs-12">
+                        <input asp-for="UserName" class="form-control" />
+                        <span asp-validation-for="UserName" class="text-danger"></span>
+                    </div>
+                }
+            </div>
+            <div class="form-group">
+                <label asp-for="FirstName" class="control-label col-md-3 col-sm-4 col-xs-12"></label>
+                <div class="col-md-4 col-sm-5 col-xs-12">
+                    <input asp-for="FirstName" class="form-control" />
+                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="LastName" class="control-label col-md-3 col-sm-4 col-xs-12"></label>
+                <div class="col-md-4 col-sm-5 col-xs-12">
+                    <input asp-for="LastName" class="form-control" />
+                    <span asp-validation-for="LastName" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="SelectedRoleIds" class="control-label col-md-3 col-sm-4 col-xs-12"></label>
+                <div class="col-md-4 col-sm-5 col-xs-12">
+                    @(Html.Kendo().MultiSelectFor(model => model.SelectedRoleIds)
+                          .BindTo(Model.AvailableRoles)
+                          .DataTextField("Text")
+                          .DataValueField("Value"))
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="SelectedRoleIds" class="control-label col-md-3 col-sm-4 col-xs-12">
+                    Status <i id="isactive-help" class="fa fa-info-circle"></i>
+                </label>
+                @(Html.Kendo().Tooltip().For("#isactive-help").Position(TooltipPosition.Bottom).Width(250)
+                      .Content("Uncheck this checkbox, if you do not want this user accessing the application."))
+                <div class="col-md-4 col-sm-5 col-xs-12">
+                    <label for="@Html.IdFor(model => model.IsActive)" class="checkbox-inline">@Html.CheckBoxFor(model => model.IsActive) Active</label>
+                </div>
+            </div>
+            @if (Model.Id > 0)
+            {
+                <div class="form-group">
+                    <div class="col-md-offset-3 col-sm-offset-4 col-md-9 col-sm-8 col-xs-12">
+                        <span class="timestamp">Created on <strong>@Model.CreatedOn.ToString("d")</strong></span>
+                        <span class="timestamp">Last updated on <strong>@Model.ModifiedOn.ToString("d")</strong></span>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

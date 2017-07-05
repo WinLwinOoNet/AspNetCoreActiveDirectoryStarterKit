@@ -1,0 +1,105 @@
+@using Asp.Core
+@using Microsoft.Extensions.Options
+@using Asp.Web.Common
+
+@inject IUserSession UserSession
+@inject IOptions<AppSettings> AppSettings
+
+@if (UserSession.IsAuthenticated)
+{
+    @(Html.Kendo().Window()
+          .Name("SessionExpireNotification")
+          .Title("Need More Time?")
+          .Modal(true)
+          .Content(@<text>
+            <p>
+                Your session is about to expire. You will be automatically signed out in
+            </p>
+            <h2 style="margin-top: 0">
+                <span id="logout-counter-span">0@(AppSettings.Value.CookieAuthentication.SessionExpireNotificationMinutes):00</span>
+            </h2>
+            <p>
+                To continue your session, select <strong>Stay Signed In</strong>.
+            </p>
+            <p>
+                <button id="stay-logged-in-button" type="button" class="btn btn-primary">
+                    Stay Signed In
+                </button>
+                <button id="signout-button" type="button" class="btn btn-default">
+                    Sign out
+                </button>
+            </p>
+        </text>)
+          .Width(450)
+          .Visible(false)
+          .Events(ev => ev.Close("onSessionExpireNotificationClose"))
+    )
+
+    <script>
+
+        var notificationInterval,
+            logoutInterval,
+            logoutCounterSpan;
+
+        function startNotificationCounter() {
+            var counter = @AppSettings.Value.CookieAuthentication.ExpireMinutes;
+            notificationInterval = setInterval(function() {
+                    counter--;
+                    if (counter === @AppSettings.Value.CookieAuthentication.SessionExpireNotificationMinutes) {
+                        $("#SessionExpireNotification").data("kendoWindow").center().open();
+                        startLogoutCounter();
+                    }
+                },
+                60000);
+        }
+
+        function startLogoutCounter() {
+            var counter = @(AppSettings.Value.CookieAuthentication.SessionExpireNotificationMinutes*60);
+            logoutInterval = setInterval(function() {
+                    counter--;
+                    if (counter < 0) {
+                        $("#logoutForm").submit();
+                    } else {
+                        var m = Math.floor(counter / 60);
+                        var s = Math.floor(counter % 60);
+                        var mDisplay = m < 10 ? "0" + m : m;
+                        var sDisplay = s < 10 ? "0" + s : s;
+                        logoutCounterSpan.text(mDisplay + ":" + sDisplay);
+                    }
+                },
+                1000);
+        }
+
+        function resetCounters() {
+            clearInterval(notificationInterval);
+            clearInterval(logoutInterval);
+            logoutCounterSpan.text("0@(AppSettings.Value.CookieAuthentication.SessionExpireNotificationMinutes):00");
+            startNotificationCounter();
+        }
+
+        function onSessionExpireNotificationClose() {
+            resetCounters();
+        }
+
+        $(function() {
+            logoutCounterSpan = $("#logout-counter-span");
+
+            startNotificationCounter();
+
+            $("#stay-logged-in-button").click(function() {
+                $.get("@Url.Action("Index", "KeepAlive", new {area = ""})",
+                    null,
+                    function(data) {
+                        resetCounters();
+                        $("#SessionExpireNotification").data("kendoWindow").center().close();
+                    }
+                );
+            });
+
+            $("#signout-button").click(function() {
+                $("#logoutForm").submit();
+            });
+        });
+
+    </script>
+}

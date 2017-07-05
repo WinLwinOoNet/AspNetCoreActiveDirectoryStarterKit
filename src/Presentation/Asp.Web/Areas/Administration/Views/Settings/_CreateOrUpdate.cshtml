@@ -1,0 +1,24 @@
+﻿@model  Asp.Web.Common.Models.SettingViewModels.SettingViewModel
+
+<div class="content">
+    <div class="box box-primary form-horizontal">
+        <div class="box-body">
+            <input type="hidden" asp-for="Id" />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label col-md-3 col-sm-4 col-xs-12"></label>
+                <div class="col-md-7 col-sm-8 col-xs-12">
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Value" class="control-label col-md-3 col-sm-4 col-xs-12"></label>
+                <div class="col-md-7 col-sm-8 col-xs-12">
+                    <textarea asp-for="Value" class="form-control" rows="3"></textarea>
+                    <span asp-validation-for="Value" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

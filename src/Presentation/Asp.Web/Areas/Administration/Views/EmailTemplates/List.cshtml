@@ -1,0 +1,32 @@
+﻿@using Asp.Core
+@using Asp.Web.Common.Models.EmailTemplateViewModels
+@{
+    ViewBag.Title = Constants.MainPages.EmailTemplates;
+}
+
+
+<div class="content-header clearfix">
+    <h1 class="pull-left">
+        <i class="fa fa-envelope-o" aria-hidden="true"></i> @ViewBag.Title
+    </h1>
+</div>
+
+<div class="content">
+    @(Html.Kendo().Grid<EmailTemplateViewModel>()
+        .Name("emailTemplatGrid")
+        .Columns(columns =>
+        {
+            columns.Bound(d => d.Id).Title("Edit")
+                .ClientTemplate("<a href=\"Edit/#=Id#\"><i class=\"fa fa-pencil\" aria-hidden=\"true\"></i></a>")
+                .Width(50)
+                .HtmlAttributes(new { @class = "text-center" })
+                .HeaderHtmlAttributes(new { @class = "text-center" });
+            columns.Bound(d => d.Name).Title("Name");
+            columns.Bound(d => d.Description).Title("Description");
+        })
+        .HtmlAttributes(new { style = "width: 800px" })
+        .DataSource(dataSource => dataSource
+            .Ajax()
+            .Read(read => read.Action("List", "EmailTemplates")))
+    )
+</div>

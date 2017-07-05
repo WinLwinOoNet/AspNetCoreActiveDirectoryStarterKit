@@ -1,0 +1,145 @@
+﻿@using Asp.Core
+@using Asp.Web.Common.Models.UserViewModels
+@model Asp.Web.Common.Models.UserViewModels.UserSearchViewModel
+@{
+    ViewBag.Title = Constants.MainPages.Users;
+}
+
+@using (Html.BeginForm())
+{
+    <div class="content-header clearfix">
+        <h1 class="pull-left">
+            <i class="fa fa-user" aria-hidden="true"></i> @ViewBag.Title
+        </h1>
+        <div class="pull-right">
+            <a href="@Url.Action("Create")" class="btn btn-success">
+                <i class="fa fa-plus" aria-hidden="true"></i> Add New User
+            </a>
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="panel panel-default">
+            <div class="panel-body form-horizontal">
+                <div class="row">
+                    <div class="col-lg-5 col-md-6 col-xs-12">
+                        <div class="form-group">
+                            <label asp-for="LastName" class="control-label col-md-4 col-sm-5 col-xs-12"></label>
+                            <div class="col-md-8 col-sm-7 col-xs-12">
+                                <input asp-for="LastName" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="SelectedRoleId" class="control-label col-md-4 col-sm-5 col-xs-12"></label>
+                            <div class="col-md-8 col-sm-7 col-xs-12">
+                                <select asp-for="SelectedRoleId" asp-items="@Model.AvailableRoles" class="form-control"></select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-7 col-md-6 col-xs-12">
+                        <div class="form-group">
+                            <label asp-for="Status" class="control-label col-md-4 col-sm-5 col-xs-12"></label>
+                            <div class="col-md-8 col-sm-7 col-xs-12">
+                                <label class="radio-inline">@Html.RadioButtonFor(model => model.Status, "") All</label>
+                                <label class="radio-inline">@Html.RadioButtonFor(model => model.Status, "1") Active</label>
+                                <label class="radio-inline">@Html.RadioButtonFor(model => model.Status, "0") Inactive</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 text-center">
+                        <button id="searchButton" type="button" class="btn btn-primary btn-search"
+                                data-loading-text="Searching...">
+                            <i class="fa fa-search" aria-hidden="true"></i> Search
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @(Html.Kendo().Grid<UserViewModel>()
+        .Name("userGrid")
+        .Sortable()
+          .Pageable(pageableBuilder => pageableBuilder.Refresh(true).PageSizes(new[] { 5, 10, 25, 50, 100, 500, 1000 }))
+        .Columns(columns =>
+        {
+            columns.Bound(d => d.Id).Title("Edit")
+                .ClientTemplate("<a href=\"Edit/#=Id#\" title=\"Edit #=FirstName#\"><i class='fa fa-pencil'></i></a>")
+                .Width(75)
+                .HtmlAttributes(new { @class = "text-center" })
+                .HeaderHtmlAttributes(new { @class = "text-center" });
+            columns.Bound(d => d.FirstName);
+            columns.Bound(d => d.LastName);
+            columns.Bound(d => d.UserName);
+            columns.Bound(d => d.AuthorizedRoleNames).Sortable(false);
+            columns.Bound(d => d.IsActive)
+                .ClientTemplate("#if(IsActive){#<span class=\"label label-success\">Active</span>#}else{#<span class=\"label label-danger\">Inactive</span>#}#")
+                .Width(100)
+                .HtmlAttributes(new { @class = "text-center" })
+                .HeaderHtmlAttributes(new { @class = "text-center" });
+            columns.Bound(d => d.LastLoginDate).Format("{0:d}")
+                .HtmlAttributes(new { @class = "text-center" })
+                .HeaderHtmlAttributes(new { @class = "text-center" });
+            columns.Bound(d => d.CreatedOn).Format("{0:d}")
+                .HtmlAttributes(new { @class = "text-center" })
+                .HeaderHtmlAttributes(new { @class = "text-center" });
+            columns.Bound(d => d.ModifiedOn).Format("{0:d}")
+                .HtmlAttributes(new { @class = "text-center" })
+                .HeaderHtmlAttributes(new { @class = "text-center" });
+        })
+        .DataSource(dataSource => dataSource
+            .Ajax()
+            .ServerOperation(true)
+            .PageSize(10)
+            .Read(read => read.Action("List", "Users").Data("additionalData"))
+            .Model(model => model.Id(m => m.Id))
+            .Events(events => events
+                .RequestStart("requestStart")
+                .RequestEnd("requestEnd")
+                .Error("displayGridError")))
+
+        )
+    </div>
+    <script type="text/javascript">
+
+        $(function () {
+
+            $("form").keydown(function (event) {
+                if (event.keyCode === 13) {
+                    $("#searchButton").click();
+                    return false;
+                }
+            });
+
+            $("#searchButton").click(function () {
+                var grid = $("#userGrid").data("kendoGrid");
+                grid.dataSource.page(1); // new search, so set page size to 1.
+            });
+        });
+
+        function requestStart(e) {
+            $("#searchButton").button("loading");
+        }
+
+        function requestEnd(e) {
+            $("#searchButton").button("reset");
+        }
+
+        function dataBound() {
+            if (this.dataSource.totalPages() === 1) {
+                this.pager.element.hide();
+            } else {
+                this.pager.element.show();
+            }
+        }
+
+        function additionalData() {
+            return {
+                Status: $("input:radio[id='@Html.IdFor(model => model.Status)']:checked").val(),
+                LastName: $("#@Html.IdFor(model => model.LastName)").val()
+            };
+        }
+
+    </script>
+}
