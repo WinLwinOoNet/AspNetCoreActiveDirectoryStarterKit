@@ -1,7 +1,9 @@
 ﻿@using Asp.Core
 @using Asp.Web.Common
+@using Microsoft.Extensions.Options
 
 @inject IUserSession UserSession
+@inject IOptions<AppSettings> AppSettings
 
 <!DOCTYPE html>
 <html>
@@ -52,6 +54,12 @@
                 @RenderBody()
             </div>
         </div>
+        <footer class="main-footer">
+            <div class="pull-right hidden-xs">
+                <b>Version</b> @AppSettings.Value.Application.Version
+            </div>
+            <strong>@AppSettings.Value.Application.Name</strong>
+        </footer>
     </div>
     @RenderSection("Scripts", required: false)
     @await Html.PartialAsync("_Alerts")
