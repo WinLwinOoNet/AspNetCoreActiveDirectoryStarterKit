@@ -6,12 +6,12 @@ namespace Asp.Web.Common.Mvc.Alerts
 {
     public class AlertDecoratorResult : ActionResult
     {
-        public ActionResult InnerResult { get; }
+        public IActionResult InnerResult { get; }
         public string AlertClass { get; }
         public string Message { get; }
 
         public AlertDecoratorResult(
-            ActionResult innerResult,
+            IActionResult innerResult,
             string alertClass,
             string message)
         {

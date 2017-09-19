@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Asp.Core;
 using Asp.Core.Data;
 using Asp.Core.Domains;
-using Asp.Repositories.Domains;
 using Asp.Repositories.Messages;
 using Asp.Repositories.Roles;
 using Asp.Repositories.Users;
@@ -26,7 +25,6 @@ namespace Asp.Web.Areas.Administration.Controllers
     public class UsersController : Controller
     {
         private readonly IDateTime _dateTime;
-        private readonly IDomainRepository _domainRepository;
         private readonly IMapper _mapper;
         private readonly IMessageService _messageService;
         private readonly IRoleRepository _roleRepository;
@@ -35,7 +33,6 @@ namespace Asp.Web.Areas.Administration.Controllers
 
         public UsersController(
             IDateTime dateTime,
-            IDomainRepository domainRepository,
             IMapper mapper,
             IMessageService messageService,
             IRoleRepository roleRepository,
@@ -43,7 +40,6 @@ namespace Asp.Web.Areas.Administration.Controllers
             IUserSession userSession)
         {
             _dateTime = dateTime;
-            _domainRepository = domainRepository;
             _mapper = mapper;
             _roleRepository = roleRepository;
             _messageService = messageService;
@@ -51,38 +47,41 @@ namespace Asp.Web.Areas.Administration.Controllers
             _userSession = userSession;
         }
 
-        public ActionResult Index()
+        public IActionResult Index()
         {
             return RedirectToAction("List");
         }
 
-        public async Task<ActionResult> List()
+        public async Task<IActionResult> List()
         {
             var roleNames = await GetAvailableRoles();
             roleNames.Insert(0, new SelectListItem {Text = "All", Value = ""});
             var model = new UserSearchViewModel {AvailableRoles = roleNames, Status = ""};
             return View("List", model);
         }
-        
+
         [HttpPost]
-        public async Task<ActionResult> List([DataSourceRequest] DataSourceRequest request, UserSearchViewModel model)
+        public async Task<IActionResult> List([DataSourceRequest] DataSourceRequest request, UserSearchViewModel model)
         {
             var dataRequest = ParsePagedDataRequest(request, model);
             var entities = await _userRepository.GetUsersAsync(dataRequest);
-            var roles = await _roleRepository.GetAllRoles();
+            var roles = await _roleRepository.GetAllRolesAsync();
             var models = entities.Select(e => _mapper.Map<User, UserViewModel>(e)).ToList();
             // Get authorized role names
             foreach (var m in models)
             {
                 if (m.AuthorizedRoleIds.Any())
-                    m.AuthorizedRoleNames = string.Join(",", 
-                        roles.Where(r => m.AuthorizedRoleIds.Contains(r.Id)).Select(r => r.Name).OrderBy(r => r).ToArray());
+                {
+                    m.AuthorizedRoleNames = string.Join(",",
+                        roles.Where(r => m.AuthorizedRoleIds.Contains(r.Id)).Select(r => r.Name).OrderBy(r => r)
+                            .ToArray());
+                }
             }
             var result = new DataSourceResult {Data = models, Total = entities.TotalCount};
             return Json(result);
         }
-        
-        public async Task<ActionResult> Create()
+
+        public async Task<IActionResult> Create()
         {
             var model = new UserCreateUpdateViewModel
             {
@@ -94,32 +93,27 @@ namespace Asp.Web.Areas.Administration.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(UserCreateUpdateViewModel model)
+        public async Task<IActionResult> Create(UserCreateUpdateViewModel model)
         {
             if (ModelState.IsValid)
             {
                 var checkingUser = await _userRepository.GetUserByUserNameAsync(model.UserName);
                 if (checkingUser != null)
                 {
-                    return RedirectToAction("List").WithError($"User with same username {model.UserName} alredy exists.");
+                    return RedirectToAction("List")
+                        .WithError($"User with same username {model.UserName} alredy exists.");
                 }
 
                 var dateTimeNow = _dateTime.Now;
                 var username = _userSession.UserName;
-                var user = new User
-                {
-                    UserName = model.UserName.ToLowerInvariant(),
-                    FirstName = model.FirstName,
-                    LastName = model.LastName,
-                    IsActive = model.IsActive,
-                    LastLoginDate = dateTimeNow,
-                    CreatedBy = username,
-                    CreatedOn = dateTimeNow,
-                    ModifiedBy = username,
-                    ModifiedOn = dateTimeNow
-                };
+                var user = _mapper.Map<UserCreateUpdateViewModel, User>(model);
+                user.LastLoginDate = dateTimeNow;
+                user.CreatedBy = username;
+                user.CreatedOn = dateTimeNow;
+                user.ModifiedBy = username;
+                user.ModifiedOn = dateTimeNow;
 
-                var allRoles = await _roleRepository.GetAllRoles();
+                var allRoles = await _roleRepository.GetAllRolesAsync();
                 foreach (var role in allRoles)
                 {
                     if (model.SelectedRoleIds.Any(r => r == role.Id))
@@ -135,7 +129,7 @@ namespace Asp.Web.Areas.Administration.Controllers
             return View("Create", model);
         }
 
-        public async Task<ActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
                 return RedirectToAction("List");
@@ -145,14 +139,14 @@ namespace Asp.Web.Areas.Administration.Controllers
                 return RedirectToAction("List");
 
             var model = _mapper.Map<User, UserCreateUpdateViewModel>(user);
-            model.SelectedRoleIds = (await _roleRepository.GetUserRolesForUser(user.Id)).Select(r => r.RoleId).ToList();
+            model.SelectedRoleIds = (await _roleRepository.GetUserRolesForUserAsync(user.Id)).Select(r => r.RoleId).ToList();
             model.AvailableRoles = await GetAvailableRoles();
             return View("Edit", model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(UserCreateUpdateViewModel model)
+        public async Task<IActionResult> Edit(UserCreateUpdateViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -162,14 +156,18 @@ namespace Asp.Web.Areas.Administration.Controllers
                     return RedirectToAction("List").WithError("Please select a user.");
                 }
 
+                var dateTimeNow = _dateTime.Now;
+                var username = _userSession.UserName;
+                user = _mapper.Map(model, user);
                 user.FirstName = model.FirstName;
                 user.LastName = model.LastName;
                 user.IsActive = model.IsActive;
-                user.ModifiedOn = _dateTime.Now;
-                user.ModifiedBy = _userSession.UserName;
+                user.LastLoginDate = dateTimeNow;
+                user.ModifiedOn = dateTimeNow;
+                user.ModifiedBy = username;
 
-                var allRoles = await _roleRepository.GetAllRoles();
-                var allUserRoles = await _roleRepository.GetUserRolesForUser(model.Id);
+                var allRoles = await _roleRepository.GetAllRolesAsync();
+                var allUserRoles = await _roleRepository.GetUserRolesForUserAsync(model.Id);
                 foreach (var role in allRoles)
                 {
                     if (model.SelectedRoleIds.Any(r => r == role.Id))
@@ -228,27 +226,8 @@ namespace Asp.Web.Areas.Administration.Controllers
 
         private async Task<IList<SelectListItem>> GetAvailableRoles()
         {
-            var roles = await _roleRepository.GetAllRoles();
-            var roleNames = new List<SelectListItem>();
-            var isAdministrator = _userSession.IsInRole(Constants.RoleNames.Administrator);
-            foreach (var role in roles)
-            {
-                if (role.Name == Constants.RoleNames.Administrator)
-                {
-                    if (isAdministrator)
-                        roleNames.Add(new SelectListItem {Text = role.Name, Value = role.Id.ToString()});
-                }
-                else
-                    roleNames.Add(new SelectListItem {Text = role.Name, Value = role.Id.ToString()});
-            }
-
-            return roleNames;
-        }
-
-        private async Task<IList<SelectListItem>> GetAvailableDomains()
-        {
-            return (await _domainRepository.GetAllDomainsAsync())
-                .Select(d => new SelectListItem {Text = d.Name, Value = d.Name })
+            return (await _roleRepository.GetAllRolesAsync())
+                .Select(role => new SelectListItem {Text = role.Name, Value = role.Id.ToString()})
                 .ToList();
         }
     }

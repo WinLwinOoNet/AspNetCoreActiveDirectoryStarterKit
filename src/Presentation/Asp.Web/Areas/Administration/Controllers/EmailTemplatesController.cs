@@ -35,18 +35,18 @@ namespace Asp.Web.Areas.Administration.Controllers
             _userSession = userSession;
         }
 
-        public ActionResult Index()
+        public IActionResult Index()
         {
             return RedirectToAction("List");
         }
 
-        public ActionResult List()
+        public IActionResult List()
         {
             return View("List");
         }
 
         [HttpPost]
-        public async Task<ActionResult> List([DataSourceRequest] DataSourceRequest request)
+        public async Task<IActionResult> List([DataSourceRequest] DataSourceRequest request)
         {
             var entities = await _emailTemplateRepository.GetAllEmailTemplates();
             var models = entities.Select(e => _mapper.Map<EmailTemplate, EmailTemplateViewModel>(e)).ToList();
@@ -54,7 +54,7 @@ namespace Asp.Web.Areas.Administration.Controllers
             return Json(result);
         }
 
-        public async Task<ActionResult> Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
             var emailTemplate = await _emailTemplateRepository.GetEmailTemplateById(id);
 
@@ -67,7 +67,7 @@ namespace Asp.Web.Areas.Administration.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(EmailTemplateViewModel model)
+        public async Task<IActionResult> Edit(EmailTemplateViewModel model)
         {
             if (ModelState.IsValid)
             {

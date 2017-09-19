@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Asp.Core;
 using Asp.Core.Domains;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace Asp.Web.Common.Security
 {
@@ -11,8 +12,7 @@ namespace Asp.Web.Common.Security
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public SignInManager(
-            IHttpContextAccessor httpContextAccessor)
+        public SignInManager(IHttpContextAccessor httpContextAccessor)
         {
             _httpContextAccessor = httpContextAccessor;
         }
@@ -34,13 +34,13 @@ namespace Asp.Web.Common.Security
 
             var identity = new ClaimsIdentity(claims, "local", "name", "role");
             var principal = new ClaimsPrincipal(identity);
-
-            await _httpContextAccessor.HttpContext.Authentication.SignInAsync(Constants.AuthenticationScheme, principal);
+            
+            await _httpContextAccessor.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
         }
 
         public async Task SignOutAsync()
         {
-            await _httpContextAccessor.HttpContext.Authentication.SignOutAsync(Constants.AuthenticationScheme);
+            await _httpContextAccessor.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
         }
     }
 }

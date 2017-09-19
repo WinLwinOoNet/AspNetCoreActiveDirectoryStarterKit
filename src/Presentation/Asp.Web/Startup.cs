@@ -1,6 +1,4 @@
-﻿using System;
-using System.Net;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using Asp.Core;
 using Asp.Data;
 using Asp.Emails;
@@ -22,7 +20,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Authorization;
-using Microsoft.AspNetCore.Mvc.Internal;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -69,6 +66,14 @@ namespace Asp.Web
                 // Maintain property names during serialization. See: https://github.com/aspnet/Announcements/issues/194
                 .AddJsonOptions(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
 
+            // https://docs.microsoft.com/en-us/aspnet/core/security/authentication/cookie?tabs=aspnetcore2x
+            // https://docs.microsoft.com/en-us/aspnet/core/migration/1x-to-2x/identity-2x#cookie-based-authentication
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options => {
+                    options.AccessDeniedPath = "/Common/AccessDenied";
+                    options.LoginPath = "/Account/Login";
+                });
+
             // Set up policies from claims
             // https://leastprivilege.com/2016/08/21/why-does-my-authorize-attribute-not-work/
             services.AddAuthorization(options =>
@@ -105,6 +110,8 @@ namespace Asp.Web
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseBrowserLink();
+                app.UseDatabaseErrorPage();
             }
             else
             {
@@ -115,31 +122,8 @@ namespace Asp.Web
             loggerFactory.AddNLog();
             app.AddNLogWeb();
             LogManager.Configuration.Variables["connectionString"] = Configuration.GetConnectionString("DefaultConnection");
-            LogManager.Configuration.Variables["configDir"] = @"C:\Projects\AspNetCoreActiveDirectoryStarterKit";
-
-
-            // https://docs.microsoft.com/en-us/aspnet/core/security/authentication/cookie
-            // https://github.com/leastprivilege/AspNetCoreSecuritySamples/blob/master/Authorization/src/AspNetCoreAuthentication/Startup.cs#L76
-            app.UseCookieAuthentication(new CookieAuthenticationOptions
-            {
-                Events = new CookieAuthenticationEvents
-                {
-                    // You will need this only if you use Ajax calls with a library not compatible with IsAjaxRequest
-                    // More info here: https://github.com/aspnet/Security/issues/1056
-                    OnRedirectToAccessDenied = context =>
-                    {
-                        context.Response.StatusCode = (int) HttpStatusCode.Forbidden;
-                        return TaskCache.CompletedTask;
-                    }
-                },
-                ExpireTimeSpan = TimeSpan.FromMinutes(Int32.Parse(Configuration.GetSection("AppSettings:CookieAuthentication:ExpireMinutes").Value)),
-                AuthenticationScheme = Constants.AuthenticationScheme,
-                LoginPath = new PathString("/Account/Login"),
-                AccessDeniedPath = new PathString("/Common/AccessDenied"),
-                AutomaticAuthenticate = true,
-                AutomaticChallenge = true
-            });
-
+            
+            app.UseAuthentication();
             app.UseStaticFiles();
             app.UseSession();
             app.UseMvc(routes =>

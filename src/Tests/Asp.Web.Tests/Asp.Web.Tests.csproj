@@ -1,14 +1,17 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp1.1</TargetFramework>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="6.1.1" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.0.0" />
-    <PackageReference Include="NSubstitute" Version="2.0.3" />
-    <PackageReference Include="Telerik.UI.for.AspNet.Core" Version="2017.1.223" />
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.3.0" />
+    <PackageReference Include="Moq" Version="4.7.99" />
+    <PackageReference Include="Telerik.UI.for.AspNet.Core" Version="2017.3.913" />
     <PackageReference Include="xunit" Version="2.2.0" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.2.0" />
   </ItemGroup>
@@ -16,7 +19,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Libraries\Asp.Core\Asp.Core.csproj" />
     <ProjectReference Include="..\..\Libraries\Asp.Repositories\Asp.Repositories.csproj" />
-    <ProjectReference Include="..\..\Presentation\Asp.Web.Common\Asp.Web.Common.csproj" />
     <ProjectReference Include="..\..\Presentation\Asp.Web\Asp.Web.csproj" />
   </ItemGroup>
 

@@ -12,7 +12,7 @@ using AutoMapper;
 using Kendo.Mvc;
 using Kendo.Mvc.UI;
 using Microsoft.AspNetCore.Mvc;
-using NSubstitute;
+using Moq;
 using Xunit;
 
 namespace Asp.Web.Tests.Controllers
@@ -28,7 +28,6 @@ namespace Asp.Web.Tests.Controllers
 
         public LogsControllerTests()
         {
-
             _log1 = new Log
             {
                 Id = 1,
@@ -76,20 +75,20 @@ namespace Asp.Web.Tests.Controllers
         public async Task List_ReturnViewResult()
         {
             // Arrange
-            var mockLogRepository = Substitute.For<ILogRepository>();
-            mockLogRepository.GetLevels().Returns(_logs.Select(x => x.Level).Distinct().ToList());
+            var mockLogRepository = new Mock<ILogRepository>();
+            mockLogRepository.Setup(x => x.GetLevels()).ReturnsAsync(_logs.Select(x => x.Level).Distinct().ToList());
 
-            var sut = new LogsController(mockLogRepository, null);
+            var sut = new LogsController(mockLogRepository.Object, null);
 
             // Act
-            var result = await sut.List() as ViewResult;
+            IActionResult result = await sut.List();
 
             // Assert
-            Assert.NotNull(result);
-            Assert.Equal("List", result.ViewName);
-            var model = (LogSearchViewModel) result.Model;
-            Assert.Equal(4, model.AvailableLevels.Count);
+            ViewResult viewResult = Assert.IsType<ViewResult>(result);
+            Assert.Equal("List", viewResult.ViewName);
 
+            var model = Assert.IsType<LogSearchViewModel>(viewResult.Model);
+            Assert.Equal(4, model.AvailableLevels.Count);
             Assert.Equal("All", model.AvailableLevels[0].Text);
             Assert.Equal("", model.AvailableLevels[0].Value);
         }
@@ -98,19 +97,20 @@ namespace Asp.Web.Tests.Controllers
         public async Task List_PostDataSourceRequestAndLogSearchModel_ReturnJsonResult()
         {
             // Arrange
-            var mockLogRepository = Substitute.For<ILogRepository>();
-            mockLogRepository.GetLogs(Arg.Any<LogPagedDataRequest>()).Returns(_logs);
-            var sut = new LogsController(mockLogRepository, _mapper);
+            var mockLogRepository = new Mock<ILogRepository>();
+            mockLogRepository.Setup(x => x.GetLogs(It.IsAny<LogPagedDataRequest>())).ReturnsAsync(_logs);
+            var sut = new LogsController(mockLogRepository.Object, _mapper);
 
             var request = new DataSourceRequest {Sorts = new List<SortDescriptor>()};
             var model = new LogSearchViewModel();
 
             // Act
-            var jsonResult = await sut.List(request, model) as JsonResult;
+            IActionResult result = await sut.List(request, model);
 
             // Assert
-            var dataSourceResult = (DataSourceResult) jsonResult.Value;
-            var models = (IList<LogViewModel>) dataSourceResult.Data;
+            JsonResult jsonResult = Assert.IsType<JsonResult>(result);
+            DataSourceResult dataSourceResult = Assert.IsType<DataSourceResult>(jsonResult.Value);
+            var models = Assert.IsType<List<LogViewModel>>(dataSourceResult.Data);
             Assert.Equal(4, models.Count);
         }
     }

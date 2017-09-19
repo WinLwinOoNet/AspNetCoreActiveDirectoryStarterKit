@@ -73,7 +73,7 @@ namespace Asp.Web.Controllers
                     var user = await _userRepository.GetUserByUserNameAsync(model.UserName);
                     if (user != null && user.IsActive)
                     {
-                        var roleNames = (await _roleRepository.GetRolesForUser(user.Id)).Select(r => r.Name).ToList();
+                        var roleNames = (await _roleRepository.GetRolesForUserAsync(user.Id)).Select(r => r.Name).ToList();
                         await _signInManager.SignInAsync(user, roleNames);
                         
                         user.LastLoginDate = _dateTime.Now;
@@ -108,7 +108,7 @@ namespace Asp.Web.Controllers
         // POST: /Account/Logout
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Logout()
+        public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
             _logger.LogInformation($"Logout Successful: {User.Identity.Name}");
@@ -122,7 +122,7 @@ namespace Asp.Web.Controllers
                 .ToList();
         }
 
-        private ActionResult RedirectToLocal(string returnUrl)
+        private IActionResult RedirectToLocal(string returnUrl)
         {
             if (Url.IsLocalUrl(returnUrl))
             {

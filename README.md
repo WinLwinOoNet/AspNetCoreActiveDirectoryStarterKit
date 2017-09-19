@@ -1,9 +1,9 @@
 # ASP.NET Core with On-Premises Active Directory Authentication
 
-Starter kit to quickly create ASP.NET Core with On-Premises Active Directory Authentication.
+Starter kit to quickly create ASP.NET Core 2.0 with On-Premises Active Directory Authentication.
 
 ### Requirements
-  * [ASP.NET Core SDK 1.1](https://www.microsoft.com/net/download/core#/sdk)
+  * [ASP.NET Core SDK 2.0](https://www.microsoft.com/net/download/core)
   * Visual Studio 2017
 
 Database script is located at [Tables.sql](https://github.com/WinLwinOoNet/AspNetCoreActiveDirectoryStarterKit/blob/master/doc/Tables.sql).
@@ -54,13 +54,25 @@ Database script is located at [Tables.sql](https://github.com/WinLwinOoNet/AspNe
 ### Offline Nuget Packages
 The application uses Telerik UI for ASP.NET Core that allows using the Kendo UI widgets from C# server-side wrappers. 
 
-Download Trial version of Kendo UI from [Telerik](http://www.telerik.com), and add Kendo UI as [NuGetPackages](http://docs.telerik.com/aspnet-core/getting-started/getting-started#configuration-Add). 
+Download Trial version of Kendo UI from [Telerik](http://www.telerik.com), and add Kendo UI as [OfflineNugetPackages](http://docs.telerik.com/aspnet-core/getting-started/getting-started#configuration-Add). 
 
-*FYI: I am not affiliated with neither Telerik or Kendo UI.*
+*Note: I am not affiliated with neither Telerik or Kendo UI.*
 
 ![Offline Nuget Packages](https://github.com/WinLwinOoNet/AspNetCoreActiveDirectoryStarterKit/blob/master/doc/screenshots/OfflineNugetPackages.png "Offline Nuget Packages")
 
 ### ASP.NET Core
-Make sure you have correct ASP.NET Core version under `C:\Program Files\dotnet\sdk`
+Please make sure you have correct ASP.NET Core version under `C:\Program Files\dotnet\sdk`
 
 ![ASP.NET Core](https://github.com/WinLwinOoNet/AspNetCoreActiveDirectoryStarterKit/blob/master/doc/screenshots/ASPNetCore.png "ASP.NET Core")
+
+## Testing 
+### Debug without Active Directory
+If you would like to view the demo of the application without Active Directory, you could use the following steps -
+
+Create database tables in SQL Server using the provided sql script inside doc folder. Replace the connection string inside `appsettings.json`.
+
+Return `true` value at `if statement` of `Account Controller` line 71. At Login Screen, enter `johndoe` and anything in the password.
+
+*Note: Please make sure to revert those changes after you've done the demo.*
+
+![Debug without Active Directory](https://github.com/WinLwinOoNet/AspNetCoreActiveDirectoryStarterKit/blob/master/doc/screenshots/DebugWithoutAD.png "Debug without Active Directory")

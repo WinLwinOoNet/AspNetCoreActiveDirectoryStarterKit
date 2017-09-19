@@ -27,14 +27,11 @@
                 </a>
                 <div class="navbar-custom-menu">
                     <ul class="nav navbar-nav">
-                    @if (User.Identity.IsAuthenticated && UserSession.IsInRole(Constants.RoleNames.Administrator))
-                    {
                         <li class="bg-green">
                             <a href="@Url.Action("Index", "Home", new {area = ""})">
                                 <i class="fa fa-arrow-circle-left"></i> Back to User Dashboard
                             </a>
                         </li>
-                    }
                         @await Html.PartialAsync("_LoginPartial")
                     </ul>
                 </div>
