@@ -22,8 +22,6 @@ namespace Asp.Core
             public static TimeSpan DefaultTimeSpan = TimeSpan.FromMinutes(60);
         }
 
-        public const string AuthenticationScheme = "CookieMiddlewareInstance";
-
         public static class MainPages
         {
             // System pages
@@ -62,7 +60,6 @@ namespace Asp.Core
         public static class RoleNames
         {
             public const string Administrator = "Administrator";
-            public const string User = "User";
         }
     }
 }

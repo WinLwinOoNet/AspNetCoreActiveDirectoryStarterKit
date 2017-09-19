@@ -24,7 +24,7 @@ namespace Asp.Web.Controllers
         //
         // GET: /Common/PageNotFound
         [AllowAnonymous]
-        public ActionResult PageNotFound()
+        public IActionResult PageNotFound()
         {
             Response.StatusCode = 404;
 
@@ -34,7 +34,7 @@ namespace Asp.Web.Controllers
         //
         // GET: /Common/AntiForgery
         [AllowAnonymous]
-        public ActionResult AntiForgery()
+        public IActionResult AntiForgery()
         {
             return View();
         }
@@ -43,7 +43,7 @@ namespace Asp.Web.Controllers
         // GET: /Common/AccessDenied
         [HttpGet]
         [AllowAnonymous]
-        public ActionResult AccessDenied()
+        public IActionResult AccessDenied()
         {
             return View();
         }

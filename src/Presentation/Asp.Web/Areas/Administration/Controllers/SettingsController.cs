@@ -28,18 +28,18 @@ namespace Asp.Web.Areas.Administration.Controllers
             _mapper = mapper;
         }
 
-        public ActionResult Index()
+        public IActionResult Index()
         {
             return RedirectToAction("List");
         }
 
-        public ActionResult List()
+        public IActionResult List()
         {
             return View();
         }
 
         [HttpPost]
-        public JsonResult List([DataSourceRequest] DataSourceRequest request)
+        public IActionResult List([DataSourceRequest] DataSourceRequest request)
         {
             var result = _settingRepository.GetAllSettings()
                 .Select(e => _mapper.Map<Setting, SettingViewModel>(e))
@@ -47,7 +47,7 @@ namespace Asp.Web.Areas.Administration.Controllers
             return Json(result);
         }
 
-        public ActionResult Edit(int id)
+        public IActionResult Edit(int id)
         {
             var setting = _settingRepository.GetSettingById(id);
 
@@ -60,7 +60,7 @@ namespace Asp.Web.Areas.Administration.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(SettingViewModel model)
+        public async Task<IActionResult> Edit(SettingViewModel model)
         {
             if (ModelState.IsValid)
             {

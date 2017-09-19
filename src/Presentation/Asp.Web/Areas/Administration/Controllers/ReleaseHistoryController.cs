@@ -8,7 +8,7 @@ namespace Asp.Web.Areas.Administration.Controllers
     [Authorize(Policy = Constants.RoleNames.Administrator)]
     public class ReleaseHistoryController : Controller
     {
-        public ActionResult Index()
+        public IActionResult Index()
         {
             return View();
         }

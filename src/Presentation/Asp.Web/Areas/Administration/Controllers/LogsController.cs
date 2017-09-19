@@ -30,12 +30,12 @@ namespace Asp.Web.Areas.Administration.Controllers
             _mapper = mapper;
         }
 
-        public ActionResult Index()
+        public IActionResult Index()
         {
             return RedirectToAction("List");
         }
 
-        public async Task<ActionResult> List()
+        public async Task<IActionResult> List()
         {
             var availableLevels = (await _logRepository.GetLevels())
                 .Select(l => new SelectListItem {Text = l, Value = l})
@@ -46,7 +46,7 @@ namespace Asp.Web.Areas.Administration.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> List([DataSourceRequest] DataSourceRequest request, LogSearchViewModel model)
+        public async Task<IActionResult> List([DataSourceRequest] DataSourceRequest request, LogSearchViewModel model)
         {
             var dataRequest = ParsePagedDataRequest(request, model);
             var entities = await _logRepository.GetLogs(dataRequest);

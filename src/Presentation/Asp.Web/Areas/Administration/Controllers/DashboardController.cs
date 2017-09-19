@@ -5,10 +5,10 @@ using Microsoft.AspNetCore.Mvc;
 namespace Asp.Web.Areas.Administration.Controllers
 {
     [Area(Constants.Areas.Administration)]
-    [Authorize(Policy = Core.Constants.RoleNames.Administrator)]
+    [Authorize(Policy = Constants.RoleNames.Administrator)]
     public class DashboardController : Controller
     {
-        public ActionResult Index()
+        public IActionResult Index()
         {
             return View();
         }

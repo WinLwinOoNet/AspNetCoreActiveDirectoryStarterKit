@@ -25,22 +25,22 @@ namespace Asp.Web.Common.Mvc.Alerts
             tempData.Set(AlertsKey, alerts);
         }
 
-        public static ActionResult WithSuccess(this ActionResult result, string message)
+        public static IActionResult WithSuccess(this IActionResult result, string message)
         {
             return new AlertDecoratorResult(result, "alert-success", message);
         }
 
-        public static ActionResult WithInfo(this ActionResult result, string message)
+        public static IActionResult WithInfo(this IActionResult result, string message)
         {
             return new AlertDecoratorResult(result, "alert-info", message);
         }
 
-        public static ActionResult WithWarning(this ActionResult result, string message)
+        public static IActionResult WithWarning(this IActionResult result, string message)
         {
             return new AlertDecoratorResult(result, "alert-warning", message);
         }
 
-        public static ActionResult WithError(this ActionResult result, string message)
+        public static IActionResult WithError(this IActionResult result, string message)
         {
             return new AlertDecoratorResult(result, "alert-danger", message);
         }

@@ -16,14 +16,14 @@ namespace Asp.Repositories.Roles
             _context = context;
         }
 
-        public async Task<IList<Role>> GetAllRoles()
+        public async Task<IList<Role>> GetAllRolesAsync()
         {
             var query = _context.Roles;
 
             return await query.ToListAsync();
         }
 
-        public async Task<IList<Role>> GetRolesForUser(int userId)
+        public async Task<IList<Role>> GetRolesForUserAsync(int userId)
         {
             var query = _context.Roles
                 .Where(r => r.UserRoles.Any(u => u.UserId == userId))
@@ -33,7 +33,7 @@ namespace Asp.Repositories.Roles
             return await query.ToListAsync();
         }
 
-        public async Task<IList<UserRole>> GetUserRolesForUser(int userId)
+        public async Task<IList<UserRole>> GetUserRolesForUserAsync(int userId)
         {
             var query = _context.UserRoles
                 .Where(r => r.UserId == userId)

@@ -9,7 +9,7 @@ namespace Asp.Web.Controllers
         //
         // GET: /KeepAlive
         [AllowAnonymous]
-        public ActionResult Index()
+        public IActionResult Index()
         {
             return Content("I am alive!");
         }
