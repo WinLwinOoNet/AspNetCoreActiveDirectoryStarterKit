@@ -26,10 +26,9 @@ namespace Asp.Web.Tests.Controllers
         private readonly User _user2;
         private readonly User _user3;
         private readonly IPagedList<User> _users;
-        private IList<Role> _roles;
-        private Mock<IDateTime> _mockDateTime;
-        private Mock<IUserRepository> _mockUserRepository;
-        private Mock<IRoleRepository> _mockRoleRepository;
+        private readonly IList<Role> _roles;
+        private readonly Mock<IDateTime> _mockDateTime;
+        private readonly Mock<IRoleRepository> _mockRoleRepository;
         private readonly Mapper _mapper;
 
         public UsersControllerTests()
