@@ -40,12 +40,17 @@ namespace Asp.Web
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
+
             Configuration = builder.Build();
+
+            CurrentEnvironment = env;
 
             env.ConfigureNLog("nlog.config");
         }
 
         public IConfigurationRoot Configuration { get; }
+
+        private IHostingEnvironment CurrentEnvironment { get; }
 
         public void ConfigureServices(IServiceCollection services)
         {
@@ -69,7 +74,8 @@ namespace Asp.Web
             // https://docs.microsoft.com/en-us/aspnet/core/security/authentication/cookie?tabs=aspnetcore2x
             // https://docs.microsoft.com/en-us/aspnet/core/migration/1x-to-2x/identity-2x#cookie-based-authentication
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(options => {
+                .AddCookie(options =>
+                {
                     options.AccessDeniedPath = "/Common/AccessDenied";
                     options.LoginPath = "/Account/Login";
                 });
@@ -89,7 +95,6 @@ namespace Asp.Web
             services.AddKendo();
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddScoped<IAuthenticationService, LdapAuthenticationService>();
             services.AddScoped<IDbContext, AppDbContext>();
             services.AddScoped<IDomainRepository, DomainRepository>();
             services.AddScoped<IEmailSender, EmailSender>();
@@ -103,6 +108,16 @@ namespace Asp.Web
             services.AddScoped<IUserSession, UserSession>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddTransient<IDateTime, DateTimeAdapter>();
+
+            // Uncomment this to perform integration tests and UI tests in Development Environment.
+            /*if (CurrentEnvironment.IsDevelopment())
+            {
+                services.AddScoped<IAuthenticationService, FakeAuthenticationService>();
+            }
+            else
+            {*/
+            services.AddScoped<IAuthenticationService, LdapAuthenticationService>();
+            /*}*/
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
