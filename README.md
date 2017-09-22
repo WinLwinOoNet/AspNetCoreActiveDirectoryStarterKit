@@ -64,7 +64,7 @@ Download Trial version of Kendo UI from [Telerik](http://www.telerik.com), and a
 
 Extract `Telerik.UI.for.AspNet.Core.xxx.nupkg` from the downloaded Zip file to a local folder. For example, `C:\OfflineNuGetPackages\telerik.ui.for.aspnet.core`
 
-![Offline Nuget Packages Location](https://github.com/WinLwinOoNet/AspNetCoreActiveDirectoryStarterKit/blob/master/doc/screenshots/OfflineNugetPackagesLocation.png"Offline Nuget Packages Location")
+![Offline Nuget Packages Location](https://github.com/WinLwinOoNet/AspNetCoreActiveDirectoryStarterKit/blob/master/doc/screenshots/OfflineNugetPackagesLocation.png "Offline Nuget Packages Location")
 
 In Visual Studio, go to `Tools > Options > NuGet Package Manager > Package Sources`, and add a new package source.
 
