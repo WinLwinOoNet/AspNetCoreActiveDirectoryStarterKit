@@ -5,6 +5,10 @@ Starter kit to quickly create ASP.NET Core 2.0 with On-Premises Active Directory
 ### Requirements
   * [ASP.NET Core SDK 2.0](https://www.microsoft.com/net/download/core)
   * Visual Studio 2017
+  * Telerik Kendo UI for AspNet Core 2017.3.913
+  
+### Options  
+  * [BundlerMinifier](https://github.com/madskristensen/BundlerMinifier)
 
 Database script is located at [Tables.sql](https://github.com/WinLwinOoNet/AspNetCoreActiveDirectoryStarterKit/blob/master/doc/Tables.sql).
 
@@ -48,15 +52,25 @@ Database script is located at [Tables.sql](https://github.com/WinLwinOoNet/AspNe
 ![Session Expire Notification](https://github.com/WinLwinOoNet/AspNetCoreActiveDirectoryStarterKit/blob/master/doc/screenshots/SessionExpireNotification.png "Session Expire Notification")
 
 ## Toaster
+Toaster will disappear after 10 seconds. You can configure it at [site.js](https://github.com/WinLwinOoNet/AspNetCoreActiveDirectoryStarterKit/blob/master/src/Presentation/Asp.Web/wwwroot/js/site.js#L62).
+
 ![Toaster](https://github.com/WinLwinOoNet/AspNetCoreActiveDirectoryStarterKit/blob/master/doc/screenshots/Toaster.png "Toaster")
 
 ## Troubleshooting
 ### Offline Nuget Packages
 The application uses Telerik UI for ASP.NET Core that allows using the Kendo UI widgets from C# server-side wrappers. 
 
-Download Trial version of Kendo UI from [Telerik](http://www.telerik.com), and add Kendo UI as [OfflineNugetPackages](http://docs.telerik.com/aspnet-core/getting-started/getting-started#configuration-Add). 
+Download Trial version of Kendo UI from [Telerik](http://www.telerik.com), and add Kendo UI as OfflineNugetPackages by following the instruction below. *Note: I am not affiliated with neither Telerik or Kendo UI.*
 
-*Note: I am not affiliated with neither Telerik or Kendo UI.*
+Extract `Telerik.UI.for.AspNet.Core.xxx.nupkg` from the downloaded Zip file to a local folder. For example, `C:\OfflineNuGetPackages\telerik.ui.for.aspnet.core`
+
+![Offline Nuget Packages Location](https://github.com/WinLwinOoNet/AspNetCoreActiveDirectoryStarterKit/blob/master/doc/screenshots/OfflineNugetPackagesLocation.png"Offline Nuget Packages Location")
+
+In Visual Studio, go to `Tools > Options > NuGet Package Manager > Package Sources`, and add a new package source.
+
+![Offline Nuget Configuration](https://github.com/WinLwinOoNet/AspNetCoreActiveDirectoryStarterKit/blob/master/doc/screenshots/OfflineNugetPackagesConfiguration.png "Offline Nuget Configuration")
+
+Then you can select `OfflineNuGetPackages` from Package source, select projects, and click Install.
 
 ![Offline Nuget Packages](https://github.com/WinLwinOoNet/AspNetCoreActiveDirectoryStarterKit/blob/master/doc/screenshots/OfflineNugetPackages.png "Offline Nuget Packages")
 
